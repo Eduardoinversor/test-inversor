@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test del Inversor — Soluciones Financieras SA</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --verde: #1D9E75;
+    --verde-dark: #0F6E56;
+    --verde-light: #E1F5EE;
+    --azul-light: #E6F1FB;
+    --amber-light: #FAEEDA;
+    --coral-light: #FAECE7;
+    --text: #1a1a1a;
+    --text-sec: #666;
+    --text-ter: #999;
+    --border: rgba(0,0,0,0.10);
+    --bg: #F7F6F2;
+    --white: #fff;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem 4rem;
+  }
+
+  header {
+    width: 100%;
+    max-width: 560px;
+    margin-bottom: 2.5rem;
+    text-align: center;
+  }
+
+  .logo-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: var(--verde);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .logo-icon svg { width: 20px; height: 20px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  .logo-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+
+  .header-sub {
+    font-size: 13px;
+    color: var(--text-ter);
+    margin-top: 2px;
+    letter-spacing: 0.3px;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 560px;
+    background: var(--white);
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    padding: 2.5rem 2rem;
+    position: relative;
+  }
+
+  .progress-track {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 2rem;
+  }
+
+  .prog-seg {
+    flex: 1;
+    height: 3px;
+    border-radius: 2px;
+    background: #E8E6E0;
+    transition: background 0.3s;
+  }
+
+  .prog-seg.done { background: var(--verde); }
+  .prog-seg.active { background: var(--verde); opacity: 0.45; }
+
+  .q-counter {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-ter);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .q-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    line-height: 1.4;
+    color: var(--text);
+    margin-bottom: 1.8rem;
+  }
+
+  .options { display: flex; flex-direction: column; gap: 9px; }
+
+  .opt {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    background: var(--white);
+    transition: border-color 0.15s, background 0.15s, transform 0.1s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .opt:hover { border-color: rgba(29,158,117,0.35); background: var(--verde-light); transform: translateX(2px); }
+  .opt:active { transform: scale(0.98); }
+
+  .opt.selected {
+    border-color: var(--verde);
+    background: var(--verde-light);
+  }
+
+  .opt-bullet {
+    width: 22px; height: 22px; min-width: 22px;
+    border-radius: 50%;
+    border: 1.5px solid #D0CEC8;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+
+  .opt.selected .opt-bullet {
+    background: var(--verde);
+    border-color: var(--verde);
+  }
+
+  .opt.selected .opt-bullet::after {
+    content: '';
+    width: 7px; height: 7px;
+    background: #fff;
+    border-radius: 50%;
+  }
+
+  .opt-label { font-size: 14px; line-height: 1.45; color: var(--text); }
+  .opt.selected .opt-label { color: var(--verde-dark); font-weight: 500; }
+
+  .sub-section { margin-top: 1.4rem; }
+  .sub-section:first-of-type { margin-top: 0; }
+
+  .sub-lbl {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-sec);
+    margin-bottom: 7px;
+  }
+
+  .sub-row { display: flex; gap: 7px; }
+
+  .sub-btn {
+    flex: 1;
+    padding: 9px 6px;
+    text-align: center;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text-sec);
+    background: var(--white);
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .sub-btn:hover { border-color: rgba(29,158,117,0.35); background: var(--verde-light); }
+  .sub-btn.selected { border-color: var(--verde); background: var(--verde-light); color: var(--verde-dark); font-weight: 500; }
+
+  .warn {
+    font-size: 13px;
+    color: #A32D2D;
+    background: #FCEBEB;
+    border-radius: 8px;
+    padding: 9px 14px;
+    margin-top: 1.2rem;
+    display: none;
+  }
+
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+  }
+
+  .btn-back {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text-ter);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    visibility: hidden;
+  }
+
+  .btn-back:hover { color: var(--text); }
+
+  .btn-next {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+    background: var(--verde);
+    border: none;
+    border-radius: 12px;
+    padding: 12px 28px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-next:hover { background: var(--verde-dark); }
+  .btn-next:active { transform: scale(0.97); }
+  .btn-next:disabled { background: #D0CEC8; cursor: not-allowed; }
+  .btn-next svg { width: 16px; height: 16px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* RESULT */
+  .result-wrap { text-align: center; }
+
+  .result-emoji {
+    font-size: 48px;
+    margin-bottom: 1rem;
+  }
+
+  .result-pre {
+    font-size: 13px;
+    color: var(--text-ter);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .perfil-nombre {
+    font-family: 'DM Serif Display', serif;
+    font-size: 42px;
+    margin-bottom: 4px;
+    line-height: 1;
+  }
+
+  .p-conservador { color: #185FA5; }
+  .p-moderado { color: #854F0B; }
+  .p-agresivo { color: #993C1D; }
+
+  .score-chip {
+    display: inline-block;
+    font-size: 13px;
+    color: var(--text-ter);
+    background: #F0EDE6;
+    border-radius: 99px;
+    padding: 4px 14px;
+    margin-bottom: 2rem;
+    margin-top: 6px;
+  }
+
+  .scale-wrap { margin: 0 auto 1.5rem; max-width: 360px; }
+
+  .scale-bar {
+    display: flex;
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+
+  .sc { flex: 1; }
+  .sc1 { background: #B5D4F4; }
+  .sc2 { background: #FAC775; }
+  .sc3 { background: #F5C4B3; }
+
+  .dot-track { position: relative; height: 12px; }
+  .dot-mark {
+    position: absolute;
+    width: 12px; height: 12px;
+    background: var(--verde);
+    border-radius: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    border: 2.5px solid #fff;
+    box-shadow: 0 0 0 1.5px var(--verde);
+    transition: left 0.5s cubic-bezier(.34,1.56,.64,1);
+  }
+
+  .scale-labs {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-ter);
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  .result-desc {
+    font-size: 14px;
+    color: var(--text-sec);
+    line-height: 1.65;
+    max-width: 380px;
+    margin: 1.5rem auto 0;
+    text-align: left;
+    background: #F7F6F2;
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+
+  .btn-reiniciar {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text-ter);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 9px 20px;
+    cursor: pointer;
+    margin-top: 1.8rem;
+    transition: all 0.15s;
+  }
+
+  .btn-reiniciar:hover { color: var(--text); border-color: rgba(0,0,0,0.2); }
+
+  .footer {
+    margin-top: 2rem;
+    font-size: 12px;
+    color: var(--text-ter);
+    text-align: center;
+  }
+
+  @media (max-width: 480px) {
+    body { padding: 1.2rem 0.75rem 3rem; }
+    .card { padding: 1.8rem 1.3rem; border-radius: 16px; }
+    .q-text { font-size: 18px; }
+    .perfil-nombre { font-size: 34px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-area">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+    </div>
+    <span class="logo-name">Eduardo Nicolini</span>
+  </div>
+  <div class="header-sub">Soluciones Financieras SA — Agente Productor N° 100, CNV</div>
+</header>
+
+<div class="card" id="mainCard">
+  <div class="progress-track" id="progTrack"></div>
+  <div id="stepContainer"></div>
+  <div class="warn" id="warnMsg">Por favor respondé todas las opciones antes de continuar.</div>
+  <div class="nav">
+    <button class="btn-back" id="btnBack" onclick="nav(-1)">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      Anterior
+    </button>
+    <button class="btn-next" id="btnNext" onclick="nav(1)">
+      Siguiente
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="footer" id="footerTxt">Tus respuestas son confidenciales y solo serán usadas para determinar tu perfil inversor.</div>
+
+<script>
+const qs = [
+  { id:1, txt:"¿Dentro de qué rango etario te encontrás?", opts:[
+    {t:"Menor de 25 años", v:10},
+    {t:"Entre 26 y 30 años", v:8},
+    {t:"Entre 31 y 40 años", v:6},
+    {t:"Entre 41 y 55 años", v:4},
+    {t:"Entre 56 y 65 años", v:3},
+    {t:"Mayor de 65 años", v:0}
+  ]},
+  { id:2, txt:"¿Cómo calificarías tu personalidad en los diferentes aspectos de la vida?", opts:[
+    {t:"Conservadora — no me gusta tomar riesgos", v:1},
+    {t:"Moderada — asumo ciertos riesgos para lograr mis objetivos", v:3},
+    {t:"Arriesgada — disfruto de los cambios y los riesgos", v:5}
+  ]},
+  { id:3, txt:"¿Invertiste en el mercado de capitales alguna vez? (acciones, bonos, ONs, fondos comunes, derivados)", opts:[
+    {t:"No", v:0},
+    {t:"Sí", v:2}
+  ]},
+  { id:4, txt:"¿Cómo calificarías tu experiencia como inversor?", opts:[
+    {t:"No invertí nunca", v:0},
+    {t:"Negativa — perdí plata", v:1},
+    {t:"Positiva — obtuve buenos resultados", v:5}
+  ]},
+  { id:5, txt:"¿Cuál es tu grado de conocimiento de los siguientes instrumentos?", sub:true,
+    items:[
+      {k:"bonos", lbl:"Bonos"},
+      {k:"ons", lbl:"Obligaciones Negociables"},
+      {k:"acciones", lbl:"Acciones y Cedears"},
+      {k:"fci", lbl:"Fondos Comunes de Inversión"},
+      {k:"derivados", lbl:"Derivados (opciones / futuros)"}
+    ]},
+  { id:6, txt:"¿Cuál es tu horizonte de inversión?", opts:[
+    {t:"Menos de 3 meses", v:0},
+    {t:"Entre 4 meses y 1 año", v:4},
+    {t:"Entre 1 y 5 años", v:8},
+    {t:"Más de 5 años", v:12}
+  ]},
+  { id:7, txt:"¿Qué porcentaje de tus ingresos mensuales asignarías a inversiones?", opts:[
+    {t:"Menos del 10%", v:0},
+    {t:"Entre 10 y 25%", v:4},
+    {t:"Entre 25 y 50%", v:7},
+    {t:"Entre 50 y 75%", v:9},
+    {t:"Más del 75%", v:11}
+  ]},
+  { id:8, txt:"¿Qué porcentaje de tus ahorros totales asignarías a inversiones?", opts:[
+    {t:"Menos del 10%", v:0},
+    {t:"Entre 10 y 25%", v:4},
+    {t:"Entre 25 y 50%", v:7},
+    {t:"Entre 50 y 75%", v:9},
+    {t:"Más del 75%", v:11}
+  ]},
+  { id:9, txt:"¿Cuál es tu patrimonio neto aproximado?", opts:[
+    {t:"Menos de USD 10.000", v:0},
+    {t:"Entre USD 10.000 y 50.000", v:2},
+    {t:"Entre USD 50.001 y 250.000", v:3},
+    {t:"Más de USD 250.000", v:4}
+  ]},
+  { id:10, txt:"¿Cuál es tu objetivo principal de inversión?", opts:[
+    {t:"Mantener el capital sin pérdidas", v:0},
+    {t:"Rentabilidad mayor al plazo fijo aceptando algo de volatilidad", v:10},
+    {t:"Buscar mayor rentabilidad asumiendo riesgos", v:16},
+    {t:"Multiplicar el capital en corto plazo con altos riesgos", v:20}
+  ]},
+  { id:11, txt:"Si el activo en el que estás invertido cae un 30%, ¿qué harías?", opts:[
+    {t:"Me preocuparía y vendería todo", v:0},
+    {t:"Vendería parte y lo movería a activos más seguros", v:5},
+    {t:"Mantendría la posición esperando que recupere", v:13},
+    {t:"Lo vería como una oportunidad y compraría más", v:20}
+  ]}
+];
+
+const answers = {};
+const subAnswers = {};
+let cur = 0;
+const total = qs.length;
+
+function buildProgress() {
+  const t = document.getElementById('progTrack');
+  for (let i = 0; i < total; i++) {
+    const s = document.createElement('div');
+    s.className = 'prog-seg';
+    s.id = 'ps' + i;
+    t.appendChild(s);
+  }
+  updateProgress();
+}
+
+function updateProgress() {
+  for (let i = 0; i < total; i++) {
+    const el = document.getElementById('ps' + i);
+    if (i < cur) el.className = 'prog-seg done';
+    else if (i === cur) el.className = 'prog-seg active';
+    else el.className = 'prog-seg';
+  }
+}
+
+function renderStep() {
+  const cont = document.getElementById('stepContainer');
+  if (cur >= total) { showResult(); return; }
+  const q = qs[cur];
+  let html = `<div class="q-counter">Pregunta ${cur+1} de ${total}</div>
+    <div class="q-text">${q.txt}</div>`;
+  if (!q.sub) {
+    html += '<div class="options">';
+    q.opts.forEach((o, j) => {
+      const sel = answers[cur] !== undefined && q.opts[j].v === answers[cur] ? ' selected' : '';
+      html += `<div class="opt${sel}" onclick="pick(${j})">
+        <div class="opt-bullet"></div>
+        <span class="opt-label">${o.t}</span>
+      </div>`;
+    });
+    html += '</div>';
+  } else {
+    q.items.forEach(item => {
+      html += `<div class="sub-section">
+        <div class="sub-lbl">${item.lbl}</div>
+        <div class="sub-row">
+          <button class="sub-btn${subAnswers[item.k]===0?' selected':''}" onclick="pickSub('${item.k}',0)">Nulo</button>
+          <button class="sub-btn${subAnswers[item.k]===1?' selected':''}" onclick="pickSub('${item.k}',1)">Medio</button>
+          <button class="sub-btn${subAnswers[item.k]===2?' selected':''}" onclick="pickSub('${item.k}',2)">Alto</button>
+        </div>
+      </div>`;
+    });
+  }
+  cont.innerHTML = html;
+  document.getElementById('btnBack').style.visibility = cur === 0 ? 'hidden' : 'visible';
+  document.getElementById('btnNext').textContent = '';
+  const label = cur === total - 1 ? 'Ver resultado' : 'Siguiente';
+  const arrow = cur === total - 1
+    ? `<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`
+    : `<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>`;
+  document.getElementById('btnNext').innerHTML = label + arrow;
+  document.getElementById('warnMsg').style.display = 'none';
+  updateProgress();
+}
+
+function pick(j) {
+  answers[cur] = qs[cur].opts[j].v;
+  document.querySelectorAll('.opt').forEach((el, i) => el.classList.toggle('selected', i === j));
+  document.getElementById('warnMsg').style.display = 'none';
+}
+
+function pickSub(key, val) {
+  subAnswers[key] = val;
+  renderStep();
+  document.getElementById('warnMsg').style.display = 'none';
+}
+
+function isAnswered() {
+  const q = qs[cur];
+  if (!q.sub) return answers[cur] !== undefined;
+  return q.items.every(item => subAnswers[item.k] !== undefined);
+}
+
+function nav(dir) {
+  if (dir === 1 && !isAnswered()) {
+    document.getElementById('warnMsg').style.display = 'block';
+    return;
+  }
+  cur += dir;
+  if (cur < 0) cur = 0;
+  renderStep();
+}
+
+function scoreQ5() {
+  return qs[4].items.reduce((s, item) => s + (subAnswers[item.k] || 0), 0);
+}
+
+function showResult() {
+  let score = 0;
+  for (let i = 0; i < total; i++) {
+    score += i === 4 ? scoreQ5() : (answers[i] || 0);
+  }
+  let perfil, cls;
+  if (score <= 36) {
+    perfil = 'Conservador'; cls = 'p-conservador';
+  } else if (score <= 73) {
+    perfil = 'Moderado'; cls = 'p-moderado';
+  } else {
+    perfil = 'Agresivo'; cls = 'p-agresivo';
+  }
+
+  const pct = Math.round(score / 110 * 100);
+
+  document.getElementById('progTrack').style.display = 'none';
+  document.querySelector('.nav').style.display = 'none';
+  document.getElementById('warnMsg').style.display = 'none';
+  document.getElementById('footerTxt').style.display = 'none';
+
+  document.getElementById('stepContainer').innerHTML = `
+    <div class="result-wrap">
+      <div class="result-pre">Tu perfil de inversor es</div>
+      <div class="perfil-nombre ${cls}">${perfil}</div>
+      <div class="score-chip">${score} puntos de 110</div>
+      <div class="scale-wrap">
+        <div class="scale-bar"><div class="sc sc1"></div><div class="sc sc2"></div><div class="sc sc3"></div></div>
+        <div class="dot-track"><div class="dot-mark" id="dotMark" style="left:0%"></div></div>
+        <div class="scale-labs">
+          <span>Conservador<br>0–36</span>
+          <span>Moderado<br>37–73</span>
+          <span>Agresivo<br>74–110</span>
+        </div>
+      </div>
+      <div class="result-desc" style="display:none;"></div>
+      <button class="btn-reiniciar" onclick="reiniciar()">Volver a hacer el test</button>
+    </div>
+  `;
+
+  setTimeout(() => {
+    const dot = document.getElementById('dotMark');
+    if (dot) dot.style.left = pct + '%';
+  }, 100);
+}
+
+function reiniciar() {
+  Object.keys(answers).forEach(k => delete answers[k]);
+  Object.keys(subAnswers).forEach(k => delete subAnswers[k]);
+  cur = 0;
+  document.getElementById('progTrack').style.display = 'flex';
+  document.querySelector('.nav').style.display = 'flex';
+  document.getElementById('footerTxt').style.display = 'block';
+  renderStep();
+}
+
+buildProgress();
+renderStep();
+</script>
+</body>
+</html>
