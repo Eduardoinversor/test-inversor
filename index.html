@@ -333,6 +333,28 @@
     padding: 16px 18px;
   }
 
+  .btn-agendar {
+    display: inline-block;
+    margin-top: 1.8rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: #fff;
+    background: var(--verde);
+    border-radius: 12px;
+    padding: 14px 28px;
+    text-decoration: none;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .btn-agendar:hover { background: var(--verde-dark); transform: translateY(-1px); }
+
+  .cta-sub {
+    font-size: 13px;
+    color: var(--text-ter);
+    margin-top: 10px;
+    margin-bottom: 0.5rem;
+  }
+
   .btn-reiniciar {
     font-family: 'DM Sans', sans-serif;
     font-size: 13px;
@@ -598,6 +620,8 @@ function showResult() {
         </div>
       </div>
       <div class="result-desc" style="display:none;"></div>
+      <a class="btn-agendar" href="https://calendly.com/nicolinieduardo/30min" target="_blank">Agendá una reunión gratuita conmigo →</a>
+      <div class="cta-sub">Tu perfil ya está definido. El siguiente paso es armar una cartera a tu medida.</div>
       <button class="btn-reiniciar" onclick="reiniciar()">Volver a hacer el test</button>
     </div>
   `;
