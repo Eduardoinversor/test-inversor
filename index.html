@@ -589,13 +589,16 @@ function showResult() {
   for (let i = 0; i < total; i++) {
     score += i === 4 ? scoreQ5() : (answers[i] || 0);
   }
-  let perfil, cls;
+  let perfil, cls, desc;
   if (score <= 36) {
     perfil = 'Conservador'; cls = 'p-conservador';
+    desc = 'Preferís instrumentos financieros líquidos y de baja volatilidad. Anteponés la seguridad al riesgo. Tu objetivo es mantener tu capital sin generar pérdidas, aceptando una rentabilidad moderada pero segura. Claros ejemplos para tu perfil son los instrumentos de renta fija: plazo fijo, caución, fondos money market o T+1.';
   } else if (score <= 73) {
     perfil = 'Moderado'; cls = 'p-moderado';
+    desc = 'Aceptás instrumentos financieros con oscilaciones de mercado, con el objetivo de lograr a mediano o largo plazo mayor rentabilidad que el perfil conservador. Tenés una tolerancia media al riesgo e invertís en activos diversificados: principalmente renta fija (títulos públicos, obligaciones negociables, fondos de renta fija) y en menor medida renta variable (acciones, CEDEARs, ETF).';
   } else {
     perfil = 'Agresivo'; cls = 'p-agresivo';
+    desc = 'Aceptás instrumentos financieros muy volátiles con el objetivo de lograr la mayor rentabilidad posible. Tu tolerancia al riesgo es alta. Invertís principalmente en activos de renta variable (acciones, CEDEARs, ETF y fondos de estos activos) y derivados (opciones y futuros).';
   }
 
   const pct = Math.round(score / 110 * 100);
@@ -619,7 +622,7 @@ function showResult() {
           <span>Agresivo<br>74–110</span>
         </div>
       </div>
-      <div class="result-desc" style="display:none;"></div>
+      <div class="result-desc">${desc}</div>
       <a class="btn-agendar" href="https://calendly.com/nicolinieduardo/30min" target="_blank">Agendá una reunión gratuita conmigo →</a>
       <div class="cta-sub">Tu perfil ya está definido. El siguiente paso es armar una cartera a tu medida.</div>
       <button class="btn-reiniciar" onclick="reiniciar()">Volver a hacer el test</button>
